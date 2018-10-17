@@ -12,6 +12,9 @@
 .custom-checkbox {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin: 10px 10px 10px 0;
     cursor: pointer;
+}
+.todo-text {
+    font-size: 1.5em;
 }

@@ -2,7 +2,7 @@ const todoList = document.querySelector('#todoList');
 const filterForm = document.querySelector('form[name="filterForm"]');
 const input = document.querySelector('#todoInput');
 const submitBtn = document.querySelector('#submit-button');
-
+const toggleBtn = document.querySelector('#toggle');
 //Views
 
 //==================
@@ -17,6 +17,7 @@ class InputView {
         this.inputElement.value = '';        
         return todoText;        
     }
+    
 }
 
 class TodoListView {
@@ -37,7 +38,7 @@ class TodoListView {
         const items = itemsArr.reduce((els, el) => (els + `
             <li class="list-group-item ${(el.completed === true) ? 'completed' : ''}" data-id="${el.id}">
                 <input type="checkbox" class="float-left custom-checkbox" />
-                ${el.todoText}
+                <span class="todo-text">${el.todoText}</span>
                 <button class="btn float-right">Delete</button>
             </li>            
         `), '')
@@ -111,6 +112,11 @@ class Controller {
                 });        
     }
 
+    toggleTodos() {
+        this.todoStore.toggleTodos();
+        this.renderList()
+    }
+
     updateItemsLeft() {  
         const itemsLeft = this.todoStore.itemsLeft();  
         this.filterView.updateItemsLeft(itemsLeft);
@@ -177,6 +183,20 @@ class TodoStore {
         return this.todos.filter(el => !el.completed).length;
     }
 
+    toggleTodos() {        
+        if(this.itemsLeft() !== 0) {
+            this.todos = this.todos.map(el => {
+                el.completed = true;
+                return el;
+            })
+        } else {
+            this.todos = this.todos.map(el => {
+                el.completed = false;
+                return el;
+            })
+        }        
+    }
+
     getTodosFromModel() {
         const filter = this.filter;
 
@@ -210,6 +230,10 @@ input.addEventListener('keypress', (e) => {
     }
 });
 
+toggleBtn.addEventListener('click', (e) => {
+    controller.toggleTodos();
+});
+
 submitBtn.addEventListener('click', () => {
     controller.addTodo();
     $('#exampleModal').modal('hide');
@@ -226,8 +250,6 @@ todoList.addEventListener('click', (e) => {
     if(target.tagName === 'INPUT') {
         controller.selectTodo(id);
         controller.renderList();
-        target.checked = !target.checked
-        console.dir(target)
     }
 });
 
