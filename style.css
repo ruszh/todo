@@ -1,0 +1,17 @@
+.completed {
+    text-decoration-line: line-through;
+    opacity: .5;
+}
+#spinner {
+    display: none;
+    text-align: center;
+}
+#spinner img {
+    width: 300px;    
+}
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
